@@ -1,0 +1,21 @@
+{
+  "name": "@spall/core",
+  "version": "0.0.1",
+  "type": "module",
+  "main": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@spall/ws": "workspace:*",
+    "@spall/api": "workspace:*",
+    "@spall/utils": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "typescript": "^5"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  }
+}

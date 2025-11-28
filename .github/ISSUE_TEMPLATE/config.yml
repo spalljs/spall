@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Discord API Documentation
+    url: https://discord.com/developers/docs
+    about: Official Discord API documentation
+  - name: Question or Discussion
+    url: https://github.com/spalljs/spall/discussions
+    about: Ask questions or discuss ideas with the community

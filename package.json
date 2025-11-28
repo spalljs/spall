@@ -1,0 +1,21 @@
+{
+  "name": "spall",
+  "version": "0.0.1",
+  "type": "module",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "test": "bun test",
+    "build": "bun run build:packages",
+    "build:packages": "bun run --filter './packages/*' build"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "discord-api-types": "^0.38.26"
+  }
+}
