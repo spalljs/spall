@@ -3,10 +3,13 @@ import type { Guild } from "./structures/Guild.ts";
 import type { BaseChannel } from "./structures/channels/index.ts";
 import type { GuildMember } from "./structures/GuildMember.ts";
 import type { Role } from "./structures/Role.ts";
+import type { Message } from "./structures/Message.ts";
+import type { Client } from "./Client.ts";
 import type {
   GatewayMessageDeleteDispatchData,
   GatewayMessageDeleteBulkDispatchData,
   GatewayReadyDispatchData,
+  APIUser,
 } from "discord-api-types/v10";
 
 /**
@@ -70,8 +73,8 @@ export type ClientEvents = {
   CHANNEL_DELETE: [channel: BaseChannel];
 
   // Message events
-  MESSAGE_CREATE: [message: import("./structures/Message.ts").Message];
-  MESSAGE_UPDATE: [oldMessage: import("./structures/Message.ts").Message | undefined, newMessage: import("./structures/Message.ts").Message];
+  MESSAGE_CREATE: [message: Message];
+  MESSAGE_UPDATE: [oldMessage: Message | undefined, newMessage: Message];
   MESSAGE_DELETE: [data: GatewayMessageDeleteDispatchData];
   MESSAGE_DELETE_BULK: [data: GatewayMessageDeleteBulkDispatchData];
 
@@ -81,7 +84,7 @@ export type ClientEvents = {
   // Guild member events
   GUILD_MEMBER_ADD: [member: GuildMember];
   GUILD_MEMBER_UPDATE: [oldMember: GuildMember | undefined, newMember: GuildMember];
-  GUILD_MEMBER_REMOVE: [member: GuildMember | undefined, user: import("discord-api-types/v10").APIUser, guildId: string];
+  GUILD_MEMBER_REMOVE: [member: GuildMember | undefined, user: APIUser, guildId: string];
 
   // Role events
   GUILD_ROLE_CREATE: [role: Role];
@@ -93,7 +96,7 @@ export type ClientEvents = {
 
   // Ready events
   READY: [data: GatewayReadyDispatchData];
-  CLIENT_READY: [client: import("./Client.ts").Client];
+  CLIENT_READY: [client: Client];
 
   // Debug
   DEBUG: [...messages: unknown[]];

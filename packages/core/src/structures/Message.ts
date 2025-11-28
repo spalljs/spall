@@ -5,6 +5,8 @@ import type {
   MessageReferenceType,
 } from "discord-api-types/v10";
 import type { Client } from "@/Client.ts";
+import type { User } from "@/structures/User.ts";
+import type { TextBasedChannel } from "@/structures/channels/TextBasedChannel.ts";
 
 /**
  * Represents a Discord message.
@@ -35,13 +37,12 @@ export class Message {
   /**
    * The author of this message (as a User structure)
    */
-  get author() {
-    let user = this.client.users.get(this.data.author.id);
-
-    if (!user) {
-      user = this.client.users._addFromData(this.data.author);
+  get author(): User {
+    const user = this.client.users.get(this.data.author.id);
+    if (user) {
+      return user;
     }
-    return user;
+    return this.client.users._addFromData(this.data.author);
   }
 
   /**
@@ -382,8 +383,14 @@ export class Message {
   /**
    * Fetch the channel this message belongs to.
    */
-  fetchChannel = async () => {
-    return await this.client.channels.fetch(this.data.channel_id);
+  fetchChannel = async (): Promise<TextBasedChannel> => {
+    const channel = await this.client.channels.fetch(this.data.channel_id);
+
+    if (!channel.isTextBased()) {
+      throw new Error("Channel is not text-based");
+    }
+
+    return channel;
   };
 
   /**
@@ -392,13 +399,7 @@ export class Message {
    * The channel is guaranteed to be cached by the MESSAGE_CREATE handler.
    */
   get channel() {
-    const channel = this.client.channels.get(this.data.channel_id);
-
-    if (channel && channel.isTextBased()) {
-      return channel as import("./channels/TextBasedChannel.ts").TextBasedChannel;
-    }
-
-    return channel!;
+    return this.client.channels.get(this.data.channel_id);
   }
 
   /**
@@ -407,7 +408,7 @@ export class Message {
   fetchGuild = async () => {
     const guild_id = "guild_id" in this.data ? this.data.guild_id : undefined;
     if (!guild_id) return null;
-    return await this.client.guilds.fetch(guild_id as string);
+    return this.client.guilds.fetch(guild_id as string);
   };
 
   /**

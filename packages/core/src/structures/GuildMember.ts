@@ -1,6 +1,7 @@
 import type { APIGuildMember, RESTPatchAPIGuildMemberJSONBody } from "discord-api-types/v10";
 import { CDN_URL } from "@spall/constants";
 import type { Client } from "@/Client.ts";
+import type { Role } from "@/structures/Role.ts";
 
 /**
  * Represents a Discord guild member.
@@ -54,27 +55,28 @@ export class GuildMember {
   /**
    * Array of role structures for this member
    */
-  get roles() {
+  get roles(): Role[] {
     const guild = this.client.guilds.get(this.guild_id);
+
     if (!guild) return [];
 
     return this.data.roles
       .map(role_id => guild.roles.get(role_id))
-      .filter((role): role is import("./Role.ts").Role => role !== undefined);
+      .filter((role) => role !== undefined);
   }
 
   /**
    * When the user joined the guild
    */
   get joined_at() {
-    return this.data.joined_at;
+    return this.data.joined_at ? new Date(this.data.joined_at) : null;
   }
 
   /**
    * When the user started boosting the guild
    */
   get premium_since() {
-    return this.data.premium_since;
+    return this.data.premium_since ? new Date(this.data.premium_since) : null;
   }
 
   /**
@@ -109,7 +111,7 @@ export class GuildMember {
    * Timestamp of when the time out will be removed
    */
   get communication_disabled_until() {
-    return this.data.communication_disabled_until;
+    return this.data.communication_disabled_until ? new Date(this.data.communication_disabled_until) : null;
   }
 
   /**
@@ -189,7 +191,7 @@ export class GuildMember {
    * @param reason - The reason for the timeout (for audit log)
    */
   timeout = async (until: string | null, reason?: string): Promise<GuildMember> => {
-    return await this.edit({ communication_disabled_until: until }, reason);
+    return this.edit({ communication_disabled_until: until }, reason);
   };
 
   /**
@@ -221,7 +223,7 @@ export class GuildMember {
    * Fetch the guild this member belongs to.
    */
   fetchGuild = async () => {
-    return await this.client.guilds.fetch(this.guild_id);
+    return this.client.guilds.fetch(this.guild_id);
   };
 
   /**
@@ -235,7 +237,7 @@ export class GuildMember {
    * Fetch the full user object for this member from the API.
    */
   fetchUser = async () => {
-    return await this.client.users.fetch(this.data.user.id);
+    return this.client.users.fetch(this.data.user.id);
   };
 
   /**

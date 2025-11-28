@@ -1,6 +1,14 @@
-import type { APIChannel, RESTPatchAPIChannelJSONBody, ChannelType } from "discord-api-types/v10";
+import { type APIChannel, type RESTPatchAPIChannelJSONBody, ChannelType } from "discord-api-types/v10";
 import type { Client } from "@/Client.ts";
-import type { TextBasedChannel } from "packages/core/src/structures/channels/TextBasedChannel.ts";
+import type { TextChannel } from "./TextChannel.ts";
+import type { DMChannel } from "./DMChannel.ts";
+import type { VoiceChannel } from "./VoiceChannel.ts";
+import type { GroupDMChannel } from "./GroupDMChannel.ts";
+import type { CategoryChannel } from "./CategoryChannel.ts";
+import type { ThreadChannel } from "./ThreadChannel.ts";
+import type { ForumChannel } from "./ForumChannel.ts";
+import type { MediaChannel } from "./MediaChannel.ts";
+import type { TextBasedChannel } from "./TextBasedChannel.ts";
 
 /**
  * Base class for all channel types.
@@ -45,71 +53,71 @@ export class BaseChannel {
   /**
    * Check if this is a text channel.
    */
-  isTextChannel = (): this is import("./TextChannel.ts").TextChannel => {
-    return this.data.type === 0; // ChannelType.GuildText
+  isTextChannel = (): this is TextChannel => {
+    return this.data.type === ChannelType.GuildText;
   };
 
   /**
    * Check if this is a DM channel.
    */
-  isDMChannel = (): this is import("./DMChannel.ts").DMChannel => {
-    return this.data.type === 1; // ChannelType.DM
+  isDMChannel = (): this is DMChannel => {
+    return this.data.type === ChannelType.DM;
   };
 
   /**
    * Check if this is a voice channel.
    */
-  isVoiceChannel = (): this is import("./VoiceChannel.ts").VoiceChannel => {
-    return this.data.type === 2; // ChannelType.GuildVoice
+  isVoiceChannel = (): this is VoiceChannel => {
+    return this.data.type === ChannelType.GuildVoice;
   };
 
   /**
    * Check if this is a group DM channel.
    */
-  isGroupDMChannel = (): this is import("./GroupDMChannel.ts").GroupDMChannel => {
-    return this.data.type === 3; // ChannelType.GroupDM
+  isGroupDMChannel = (): this is GroupDMChannel => {
+    return this.data.type === ChannelType.GroupDM;
   };
 
   /**
    * Check if this is a category channel.
    */
-  isCategoryChannel = (): this is import("./CategoryChannel.ts").CategoryChannel => {
-    return this.data.type === 4; // ChannelType.GuildCategory
+  isCategoryChannel = (): this is CategoryChannel => {
+    return this.data.type === ChannelType.GuildCategory;
   };
 
   /**
    * Check if this is an announcement channel.
    */
-  isAnnouncementChannel = (): this is import("./TextChannel.ts").TextChannel => {
-    return this.data.type === 5; // ChannelType.GuildAnnouncement
+  isAnnouncementChannel = (): this is TextChannel => {
+    return this.data.type === ChannelType.GuildAnnouncement;
   };
 
   /**
    * Check if this is a stage voice channel.
    */
-  isStageVoiceChannel = (): this is import("./VoiceChannel.ts").VoiceChannel => {
-    return this.data.type === 13; // ChannelType.GuildStageVoice
+  isStageVoiceChannel = (): this is VoiceChannel => {
+    return this.data.type === ChannelType.GuildStageVoice;
   };
 
   /**
    * Check if this is a thread channel.
    */
-  isThreadChannel = (): this is import("./ThreadChannel.ts").ThreadChannel => {
-    return this.data.type === 10 || this.data.type === 11 || this.data.type === 12; // PublicThread, PrivateThread, AnnouncementThread
+  isThreadChannel = (): this is ThreadChannel => {
+    return this.data.type === ChannelType.PublicThread || this.data.type === ChannelType.PrivateThread || this.data.type === ChannelType.AnnouncementThread;
   };
 
   /**
    * Check if this is a forum channel.
    */
-  isForumChannel = (): this is import("./ForumChannel.ts").ForumChannel => {
-    return this.data.type === 15; // ChannelType.GuildForum
+  isForumChannel = (): this is ForumChannel => {
+    return this.data.type === ChannelType.GuildForum;
   };
 
   /**
    * Check if this is a media channel.
    */
-  isMediaChannel = (): this is import("./MediaChannel.ts").MediaChannel => {
-    return this.data.type === 16; // ChannelType.GuildMedia
+  isMediaChannel = (): this is MediaChannel => {
+    return this.data.type === ChannelType.GuildMedia;
   };
 
   /**
@@ -155,7 +163,7 @@ export class BaseChannel {
    */
   fetchGuild = async () => {
     if (!this.guild_id) return null;
-    return await this.client.guilds.fetch(this.guild_id);
+    return this.client.guilds.fetch(this.guild_id);
   };
 
   /**

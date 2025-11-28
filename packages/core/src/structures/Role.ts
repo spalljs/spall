@@ -171,7 +171,7 @@ export class Role {
    * Fetch the guild this role belongs to.
    */
   fetchGuild = async () => {
-    return await this.client.guilds.fetch(this.guild_id);
+    return this.client.guilds.fetch(this.guild_id);
   };
 
   /**

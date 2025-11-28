@@ -4,6 +4,7 @@ import type { Client } from "@/Client.ts";
 import { RoleManager } from "../managers/RoleManager.ts";
 import { GuildMemberManager } from "../managers/GuildMemberManager.ts";
 import { generateSnowflake } from "@spall/utils";
+import type { GuildMember } from "./GuildMember.ts";
 
 /**
  * Represents a Discord guild (server).
@@ -427,15 +428,15 @@ export class Guild {
     presences?: boolean;
     user_ids?: string | string[];
     nonce?: string;
-  }): Promise<import("./GuildMember.ts").GuildMember[]> => {
+  }): Promise<GuildMember[]> => {
     const nonce = options?.nonce ?? generateSnowflake();
 
     return new Promise((resolve) => {
-      const allMembers: import("./GuildMember.ts").GuildMember[] = [];
+      const allMembers: GuildMember[] = [];
       let expectedChunks: number | null = null;
 
       const chunkHandler = (
-        members: import("./GuildMember.ts").GuildMember[],
+        members: GuildMember[],
         chunkIndex: number,
         chunkCount: number,
         receivedNonce: string | undefined

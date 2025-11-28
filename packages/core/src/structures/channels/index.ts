@@ -25,7 +25,7 @@ import { MediaChannel } from "./MediaChannel.ts";
 /**
  * Factory function to create the appropriate channel type from API data.
  */
-export const createChannel = (client: Client, data: APIChannel): BaseChannel => {
+export const createChannel = (client: Client, data: APIChannel) => {
   switch (data.type) {
     case ChannelType.GuildText:
     case ChannelType.GuildAnnouncement:

@@ -7,6 +7,7 @@ import { UserManager } from "./managers/UserManager.ts";
 import { GuildManager } from "./managers/GuildManager.ts";
 import { ChannelManager } from "./managers/ChannelManager.ts";
 import { handlers } from "./handlers/index.ts";
+import { User } from "@/structures/User.ts";
 
 export class Client extends EventEmitter<ClientEvents> {
   rest: RestClient;
@@ -14,7 +15,7 @@ export class Client extends EventEmitter<ClientEvents> {
   users: UserManager;
   guilds: GuildManager;
   channels: ChannelManager;
-  user: import("./structures/User.ts").User | null = null;
+  user: User | null = null;
   private token: string;
   private intents: number;
   private expected_guilds = 0;
